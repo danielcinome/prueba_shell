@@ -3,10 +3,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-char **words(char *line)
+char **words(char *line, char *sep)
 {
-	char *sep = "=";
-	char **tokens = malloc(sizeof(char *) * 64);
+	char **tokens = malloc(sizeof(char *) * 1024);
 	char *word;
 	int i = 0;
 
@@ -24,32 +23,36 @@ char **words(char *line)
 char *_getenv(char *name)
 {
 	extern char **environ;
-	char **token;
+	char **save = environ;
+	char **tokenizado;
 	int i = 0;
 
-	token = words(*environ);
-	while (*(token + i))
+	while (environ[i] != NULL)
 	{
-		if (*(token + i) == name)
+        	save[i] = environ[i];
+        	i++;
+		
+    	}
+	save[i] = NULL;
+	i = 0;
+	while(save[i] != NULL)
+	{
+		tokenizado = words(*(save + i), "=");
+		printf("%s = %s\n", tokenizado[0], tokenizado[1]);
+		if (*tokenizado[0] == *name)
 		{
-			i++;
 			break;
 		}
-		else if (*(token + i) == NULL)
-		return(NULL);
-		else
-		{
-			i++;
-		}
+	i++;
 	}
-	return(*(token + i));
+	return(*tokenizado[1]);
 }
 
 int main (void)
 {
 	char *value;
 
-	value = getenv("PWD");
-	printf("El valor de HOME es = %s\n", value);
+	value = _getenv("WD");
+	printf("El valor de PWD es %s\n", value);
 	return(0);
 }
