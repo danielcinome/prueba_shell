@@ -3,6 +3,17 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+int _strcmp(char *s1, char *s2)
+{
+	int i = 0;
+
+	while ((s1[i] != '\0' && s2[i] != '\0') && s1[i] == s2[i])
+	{
+		i++;
+	}
+	return (s1[i] - s2[i]);
+}
+
 char **words(char *line, char *sep)
 {
 	char **tokens = malloc(sizeof(char *) * 1024);
@@ -38,21 +49,21 @@ char *_getenv(char *name)
 	while(save[i] != NULL)
 	{
 		tokenizado = words(*(save + i), "=");
-		printf("%s = %s\n", tokenizado[0], tokenizado[1]);
-		if (*tokenizado[0] == *name)
+		printf("%s = %s\n",tokenizado[0], tokenizado[1]);
+		if (_strcmp(tokenizado[0], name) == 0)
 		{
 			break;
 		}
 	i++;
 	}
-	return(*tokenizado[1]);
+	return(tokenizado[1]);
 }
 
 int main (void)
 {
 	char *value;
 
-	value = _getenv("WD");
-	printf("El valor de PWD es %s\n", value);
+	value = _getenv("PATH");
+	printf("El valor de PATH es %s\n", value);
 	return(0);
 }
