@@ -1,34 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
-
-char *read_line(void)
-{
-	char *line = NULL;
-	size_t bufsize = 0;
-
-	getline(&line, &bufsize, stdin);
-	return line;
-}
-
-char **words(char *line, char *sep)
-{
-	char **tokens = malloc(sizeof(char *) * 64);
-	char *word;
-	int i = 0;
-
-	word = strtok(line, sep);
-	while (word != NULL)
-	{
-		tokens[i] = word;
-		i++;
-		word = strtok(NULL, sep);
-	}
-	tokens[i] = NULL;
-	return (tokens);
-}
-
+#include "functions.h"
 
 int main(void)
 {
