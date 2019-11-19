@@ -6,5 +6,6 @@ char *read_line(void)
 	size_t bufsize = 0;
 
 	getline(&line, &bufsize, stdin);
-	return line;
+	printf("------------------------------ %s\n", line);
+	return (line);
 }
