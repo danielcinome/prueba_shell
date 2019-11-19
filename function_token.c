@@ -2,7 +2,7 @@
 
 char **words(char *line, char *sep)
 {
-	char **tokens = malloc(sizeof(char *) * 64);
+	char **tokens = malloc(sizeof(char *) * (*line));
 	char *word;
 	int i = 0;
 
