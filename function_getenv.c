@@ -1,29 +1,27 @@
 #include "functions.h"
 
-char *_getenv(char *name)
+char *_getenv(char *name, char **env)
 {
-	extern char **environ;
-	char **save = environ;
+	char **save = env;
 	char **tokenizado;
 	int i = 0;
 
-	while (environ[i] != NULL)
+	while (env[i] != NULL)
 	{
-        	save[i] = environ[i];
-        	i++;
-		
-    	}
+			save[i] = env[i];
+			i++;
+	}
 	save[i] = NULL;
 	i = 0;
 	while(save[i] != NULL)
 	{
 		tokenizado = words(*(save + i), "=");
-		printf("%s = %s\n",tokenizado[0], tokenizado[1]);
-		if (_strcmp(tokenizado[0], name) == 0)
+		/*printf("%s = %s\n",tokenizado[0], tokenizado[1]);*/
+		if(_strcmp(tokenizado[0], name) == 0)
 		{
 			break;
 		}
-	i++;
+		i++;
 	}
-	return(tokenizado[1]);
+	return (tokenizado[1]);
 }
