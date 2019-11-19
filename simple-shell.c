@@ -12,9 +12,8 @@ char *read_line(void)
 	return line;
 }
 
-char **words(char *line)
+char **words(char *line, char *sep)
 {
-	char *sep = " \n";
 	char **tokens = malloc(sizeof(char *) * 64);
 	char *word;
 	int i = 0;
@@ -50,7 +49,7 @@ int main(void)
 		{
 			printf("#cisfun$ ");
 			cont = read_line();
-			tokenizado = words(cont);
+			tokenizado = words(cont, " \n");
 				if (execve(tokenizado[0], tokenizado, NULL) == -1)
 				{
         				perror("Error:");
