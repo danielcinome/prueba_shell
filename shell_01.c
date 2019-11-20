@@ -16,13 +16,11 @@ int main(int argc, char *argv[])
 			return(-1);
 		}
 		val_fd = isatty(STDIN_FILENO);
-printf("%d\n", val_fd);
 		if (hijo == 0)
 		{
 			if (argc == 1)
 			{
-			if (val_fd != 0)
-				printf("#cisfun$ ");
+			write(1, "#cisfun$ ", 10);
 			cont = read_line();
 			tokenizado = words(cont, " \n\a\b\r\t\0");
 				if (execve(tokenizado[0], tokenizado, NULL) == -1)
@@ -36,9 +34,12 @@ printf("%d\n", val_fd);
 		}
 		else
 		{
-			if (val_fd == 0)
-				break;
 			wait(&status);
+			if (val_fd == 0)
+			{
+			write(1, "#cisfun$ ", 10);
+				break;
+			}
 		}
 	}
 	return (1);
