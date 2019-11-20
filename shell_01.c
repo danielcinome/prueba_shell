@@ -15,25 +15,28 @@ int main(int argc, char *argv[])
 			perror("Error: hijo");
 			return(-1);
 		}
+		val_fd = isatty(STDIN_FILENO);
 		if (hijo == 0)
 		{
 			if (argc == 1)
 			{
-			printf("#cisfun$ ");
-			val_fd = isatty(STDIN_FILENO);
+			if (val_fd != 0)
+				printf("#cisfun$ ");
 			cont = read_line();
 			tokenizado = words(cont, " \n\a\b\r\t\0");
 				if (execve(tokenizado[0], tokenizado, NULL) == -1)
 				{
-						perror(argv[0]);
-						if (val_fd == 0)
+					perror(argv[0]);
+					if (val_fd == 0)
 						kill(hijo, SIGINT);
-						return (-1);
+					return (-1);
 				}
 			}
 		}
 		else
 		{
+			if (val_fd == 0)
+				break;
 			wait(&status);
 		}
 	}
