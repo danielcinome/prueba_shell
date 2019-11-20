@@ -4,9 +4,9 @@ int main(int argc, char *argv[])
 {
 	char *cont;
 	char **tokenizado;
-	int status;
+	int status, val_fd = 0;
 	pid_t hijo;
-
+		
 	while(1)
 	{
 		hijo = fork();
@@ -17,30 +17,24 @@ int main(int argc, char *argv[])
 		}
 		if (hijo == 0)
 		{
+			if (argc == 1)
+			{
 			printf("#cisfun$ ");
+			val_fd = isatty(STDIN_FILENO);
 			cont = read_line();
 			tokenizado = words(cont, " \n\a\b\r\t\0");
-			if (argc > 1)
-			{
-				if (execve(argv[0], argv, NULL) == -1)
-				{
-					perror("Error: argv");
-					return(-1);
-				}
-			}
-			else
-			{
 				if (execve(tokenizado[0], tokenizado, NULL) == -1)
 				{
 						perror(argv[0]);
+						if (val_fd == 0)
 						kill(hijo, SIGINT);
+						return (-1);
 				}
 			}
 		}
 		else
 		{
 			wait(&status);
-			sleep(1);
 		}
 	}
 	return (1);
