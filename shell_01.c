@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
 			return(-1);
 		}
 		val_fd = isatty(STDIN_FILENO);
+printf("%d\n", val_fd);
 		if (hijo == 0)
 		{
 			if (argc == 1)
