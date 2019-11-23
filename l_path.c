@@ -3,7 +3,54 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "functions.h"
+int _strlen(char *s)
+{
+	char *a = s;
 
+	while (*a)
+	{
+	++a;
+	}
+return (a - s);
+}
+
+char *str_concat(char *s1, char *s2)
+{
+	int i, j;
+	int tam1, tam2;
+	char *dest;
+
+	if (s1 == NULL)
+	{
+		s1 = "";
+	}
+	if (s2 == NULL)
+	{
+		s2 = "";
+	}
+
+	tam1 = _strlen(s1);
+	tam2 = _strlen(s2);
+
+	dest = malloc((tam1 + tam2 + 1));
+
+	if (dest == NULL)
+	{
+		return (NULL);
+	}
+	else
+	{
+		for (i = 0; i < tam1; i++)
+		{
+			dest[i] = s1[i];
+		}
+		for (j = 0; j <= tam2; j++)
+		{
+			dest[i + j] = s2[j];
+		}
+	}
+	return (dest);
+}
 int _strcmp(char *s1, char *s2)
 {
 	int i = 0;
@@ -14,74 +61,33 @@ int _strcmp(char *s1, char *s2)
 	}
 	return (s1[i] - s2[i]);
 }
-
-char **words(char *line, char *sep)
+void print_listint(token_t *h)
 {
-	char **tokens = malloc(sizeof(char *) * 1024);
-	char *word;
-	int i = 0;
-
-	word = strtok(line, sep);
-	while (word != NULL)
+	token_t *copy = h;
+	char *newpath;
+	while (copy)
 	{
-		tokens[i] = word;
-		i++;
-		word = strtok(NULL, sep);
-	}
-	tokens[i] = NULL;
-	return (tokens);
-}
-
-char *_getenv(char *name)
-{
-	extern char **environ;
-	char **save = environ;
-	char **tokenizado;
-	int i = 0;
-
-	while (environ[i] != NULL)
-	{
-        	save[i] = environ[i];
-        	i++;
-		
-    	}
-	save[i] = NULL;
-	i = 0;
-	while(save[i] != NULL)
-	{
-		tokenizado = words(*(save + i), "=");
-		if (_strcmp(tokenizado[0], name) == 0)
-		{
-			break;
-		}
-	i++;
-	}
-	return(tokenizado[1]);
-}
-void print_listint(const token_t *h)
-{
-	while (h)
-	{
-		printf("%s\n", h->str);
-		h = h->next;
+		newpath = str_concat(copy->str, "/ls");
+		printf("%s\n", newpath);
+		copy = copy->next;
 	}
 }
-int main (void)
+int main (__attribute__((unused)) int argc,__attribute__((unused)) char *argv[], char **env)
 {
 	char *value;
-	char **token;
+	char *token;
 	token_t *head;
 	int i = 0;
 
-	value = _getenv("PATH");
-	token = words(value, ":");
+	value = _getenv("PATH", env);
+	token = strtok(value, ":");
 	head = NULL;
-	while (*(token + i))
+	while (token)
 	{
-		add_nodeint_end(&head, token[i]);
-
+		add_nodeint_end(&head, token);
 		i++;
+		token = strtok(NULL, ":");
 	}
 		print_listint(head);
 	return(0);
-`}
+}
