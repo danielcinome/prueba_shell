@@ -14,6 +14,7 @@ typedef struct token_s
 	struct token_s *next;
 } token_t;
 
+char *l_path(char *cont, char **env);
 char* concatenate(token_t *h, char *parameter);
 char *str_concat(char *s1, char *s2);
 int _strcmp(char *s1, char *s2);
