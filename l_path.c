@@ -75,18 +75,17 @@ void print_listint(token_t *h)
 int main (__attribute__((unused)) int argc,__attribute__((unused)) char *argv[], char **env)
 {
 	char *value;
-	char *token;
+	char **token;
 	token_t *head;
 	int i = 0;
 
 	value = _getenv("PATH", env);
-	token = strtok(value, ":");
+	token = words(value, ":");
 	head = NULL;
-	while (token)
+	while (token[i])
 	{
-		add_nodeint_end(&head, token);
+		add_nodeint_end(&head, token[i]);
 		i++;
-		token = strtok(NULL, ":");
 	}
 		print_listint(head);
 	return(0);
